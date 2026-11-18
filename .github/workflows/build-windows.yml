@@ -13,8 +13,11 @@ jobs:
       with:
         submodules: recursive
 
-    - name: Initialize MSVC Developer Command Prompt
+    - name: Add MSVC Build Tools
       uses: ilammy/msvc-dev-cmd@v1
+      with:
+        arch: x64
+        toolset: 14.3
 
     - name: Configure CMake
       run: cmake -B build -G "Visual Studio 17 2022" -A x64
