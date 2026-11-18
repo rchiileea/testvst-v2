@@ -26,4 +26,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: VOX-RESTORE-Windows-VST3
-        path: build/VOX_RE_STORE_artefacts/Release/VST3/VOX RESTORE.vst
+        path: build/VOX_RE_STORE_artefacts/Release/VST3/VOX RESTORE.vst3
