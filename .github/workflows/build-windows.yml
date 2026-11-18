@@ -13,8 +13,8 @@ jobs:
       with:
         submodules: recursive
 
-    - name: Add MSBuild to PATH
-      uses: microsoft/setup-msbuild@v2
+    - name: Initialize MSVC Developer Command Prompt
+      uses: ilammy/msvc-dev-cmd@v1
 
     - name: Configure CMake
       run: cmake -B build -G "Visual Studio 17 2022" -A x64
@@ -26,4 +26,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: VOX-RESTORE-Windows-VST3
-        path: build/VOX_RE_STORE_artefacts/Release/VST3/VOX RESTORE.vst3
+        path: build/VOX_RE_STORE_artefacts/Release/VST3/VOX RESTORE.vst
