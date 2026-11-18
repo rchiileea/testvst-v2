@@ -29,7 +29,8 @@ VoxRestoreAudioProcessorEditor::VoxRestoreAudioProcessorEditor(VoxRestoreAudioPr
 
     for (int i = 0; i < 16; ++i)
     {
-        auto* s = sliders.add(new juce::Slider());
+        auto* s = new juce::Slider();
+        sliders.add(s);
         s->setSliderStyle(juce::Slider::RotaryHorizontalVerticalDrag);
         s->setTextBoxStyle(juce::Slider::TextBoxBelow, false, 68, 20);
         s->setColour(juce::Slider::rotarySliderFillColourId, teal);
@@ -37,12 +38,15 @@ VoxRestoreAudioProcessorEditor::VoxRestoreAudioProcessorEditor(VoxRestoreAudioPr
         s->setColour(juce::Slider::textBoxTextColourId, juce::Colours::white);
         s->setColour(juce::Slider::textBoxOutlineColourId, juce::Colours::transparentBlack);
         addAndMakeVisible(s);
-        auto* l = labels.add(new juce::Label());
+        
+        auto* l = new juce::Label();
+        labels.add(l);
         l->setText(names[i], juce::dontSendNotification);
         l->setJustificationType(juce::Justification::centred);
         l->setColour(juce::Label::textColourId, juce::Colour(0xffc4d0d4));
         l->setFont(juce::Font(10.5f).withStyle(juce::Font::bold));
         addAndMakeVisible(l);
+        
         attachments.push_back(std::make_unique<Attachment>(processor.parameters, ids[i], *s));
     }
 }
@@ -82,11 +86,14 @@ void VoxRestoreAudioProcessorEditor::paint(juce::Graphics& g)
     const juce::Rectangle<int> a[] = {{20,100,215,470},{247,100,430,470},{685,100,215,225},{685,340,215,230}};
     const juce::String t[] = {"01  FOUNDATION","02  ARTIFACT REPAIR","03  VOCAL BODY","04  LEVEL & OUTPUT"};
     for (int i=0;i<4;++i) {
-        g.setColour(panel); g.fillRoundedRectangle(a[i].toFloat(),12.0f);
+        g.setColour(panel); 
+        g.fillRoundedRectangle(a[i].toFloat(),12.0f);
+        g.setColour(teal); // <-- Fixed: explicitly restore color before drawing text
         g.setFont(juce::Font(12.0f).withStyle(juce::Font::bold));
         g.drawText(t[i],a[i].reduced(12).removeFromTop(26),juce::Justification::centredLeft);
     }
-    g.setColour(juce::Colour(0xff75858a)); g.setFont(10.0f);
+    g.setColour(juce::Colour(0xff75858a)); 
+    g.setFont(juce::Font(10.0f)); // Fixed font constructor
     g.drawText("AUTO suggests settings from level / spectral activity; it cannot restore missing words.",
                26,580,800,18,juce::Justification::centredLeft);
 }
@@ -94,6 +101,10 @@ void VoxRestoreAudioProcessorEditor::resized()
 {
     presetBox.setBounds(490,25,170,28); autoButton.setBounds(674,22,165,34);
     powerButton.setBounds(844,22,62,34); status.setBounds(26,75,560,20);
+    
+    // Safety check: ensure arrays have at least 16 elements before indexing
+    if (sliders.size() < 16 || labels.size() < 16) return;
+
     for (int i=0;i<4;++i) {
         int x=30+(i%2)*103, y=165+(i/2)*190;
         sliders[i]->setBounds(x,y,88,105); labels[i]->setBounds(x-3,y-24,94,20);
