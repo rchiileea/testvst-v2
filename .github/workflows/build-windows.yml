@@ -13,8 +13,14 @@ jobs:
       with:
         submodules: recursive
 
-    - name: Setup MinGW & Ninja
-      uses: msys2/setup-msys2@v2
+    - name: Configure CMake
+      run: cmake -B build -A x64
+
+    - name: Build Project (Release)
+      run: cmake --build build --config Release --parallel 4
+
+    - name: Upload VST3 Artifact
+      uses: actions/upload-artifact@v4
       with:
-        update: true
-        install: git mingw-w6
+        name: VOX-RESTORE-Windows-VST3
+        path: build/**/Release/VST3/*.vst3
