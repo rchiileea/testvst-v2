@@ -300,3 +300,8 @@ juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
     return new VoxRestoreAudioProcessor();
 }
+
+juce::AudioProcessorEditor* VoxRestoreAudioProcessor::createEditor()
+{
+    return new VoxRestoreAudioProcessorEditor (*this);
+}
