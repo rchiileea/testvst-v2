@@ -305,3 +305,13 @@ juce::AudioProcessorEditor* VoxRestoreAudioProcessor::createEditor()
 {
     return new VoxRestoreAudioProcessorEditor (*this);
 }
+
+bool VoxRestoreAudioProcessor::hasEditor() const
+{
+    return true;
+}
+
+juce::AudioProcessorEditor* VoxRestoreAudioProcessor::createEditor()
+{
+    return new VoxRestoreAudioProcessorEditor (*this);
+}
