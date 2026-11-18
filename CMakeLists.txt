@@ -23,6 +23,8 @@ juce_add_plugin(VOX_RE_STORE
     COPY_PLUGIN_AFTER_BUILD FALSE
 )
 
+juce_generate_juce_header(VOX_RESTORE)
+
 target_sources(VOX_RE_STORE PRIVATE
     Source/PluginProcessor.cpp
     Source/PluginProcessor.h
