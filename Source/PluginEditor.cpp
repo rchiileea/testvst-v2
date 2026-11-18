@@ -41,7 +41,7 @@ VoxRestoreAudioProcessorEditor::VoxRestoreAudioProcessorEditor(VoxRestoreAudioPr
         l->setText(names[i], juce::dontSendNotification);
         l->setJustificationType(juce::Justification::centred);
         l->setColour(juce::Label::textColourId, juce::Colour(0xffc4d0d4));
-        l->setFont(juce::Font(10.5f, juce::Font::bold));
+        l->setFont(juce::Font(10.5f).withStyle(juce::Font::bold));
         addAndMakeVisible(l);
         attachments.push_back(std::make_unique<Attachment>(processor.parameters, ids[i], *s));
     }
@@ -74,16 +74,16 @@ void VoxRestoreAudioProcessorEditor::paint(juce::Graphics& g)
 {
     g.fillAll(bg);
     g.setColour(juce::Colours::white);
-    g.setFont(juce::Font(25.0f, juce::Font::bold));
+    g.setFont(juce::Font(25.0f).withStyle(juce::Font::bold));
     g.drawText("VOX RE:STORE", 24, 16, 360, 34, juce::Justification::centredLeft);
     g.setColour(teal);
-    g.setFont(juce::Font(10.5f, juce::Font::bold));
+    g.setFont(juce::Font(10.5f).withStyle(juce::Font::bold));
     g.drawText("VOCAL RESTORATION  /  REPAIR  /  ENHANCEMENT", 26, 49, 400, 18, juce::Justification::centredLeft);
     const juce::Rectangle<int> a[] = {{20,100,215,470},{247,100,430,470},{685,100,215,225},{685,340,215,230}};
     const juce::String t[] = {"01  FOUNDATION","02  ARTIFACT REPAIR","03  VOCAL BODY","04  LEVEL & OUTPUT"};
     for (int i=0;i<4;++i) {
         g.setColour(panel); g.fillRoundedRectangle(a[i].toFloat(),12.0f);
-        g.setColour(teal); g.setFont(juce::Font(12.0f,juce::Font::bold));
+        g.setFont(juce::Font(12.0f).withStyle(juce::Font::bold));
         g.drawText(t[i],a[i].reduced(12).removeFromTop(26),juce::Justification::centredLeft);
     }
     g.setColour(juce::Colour(0xff75858a)); g.setFont(10.0f);
