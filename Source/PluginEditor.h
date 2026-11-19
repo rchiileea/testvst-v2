@@ -12,7 +12,7 @@ private:
     using Attachment = juce::AudioProcessorValueTreeState::SliderAttachment;
     VoxRestoreAudioProcessor& processor;
     juce::ComboBox presetBox;
-    juce::TextButton autoButton { "AUTO • LISTEN 10s" }, powerButton { "POWER / A-B" };
+    juce::TextButton autoButton { "AUTO - LISTEN 10s" }, powerButton { "POWER / A-B" };
     juce::Label status;
     juce::OwnedArray<juce::Slider> sliders;
     juce::OwnedArray<juce::Label> labels;
