@@ -13,7 +13,7 @@ VoxRestoreAudioProcessorEditor::VoxRestoreAudioProcessorEditor(VoxRestoreAudioPr
     addAndMakeVisible(presetBox);
     autoButton.onClick = [this] {
         processor.startAutoAnalysis();
-        status.setText("Listening to input for 10 seconds…", juce::dontSendNotification);
+        status.setText("Listening to input for 10 seconds...", juce::dontSendNotification);
         startTimerHz(20);
     };
     addAndMakeVisible(autoButton);
@@ -38,7 +38,7 @@ VoxRestoreAudioProcessorEditor::VoxRestoreAudioProcessorEditor(VoxRestoreAudioPr
         s->setColour(juce::Slider::textBoxTextColourId, juce::Colours::white);
         s->setColour(juce::Slider::textBoxOutlineColourId, juce::Colours::transparentBlack);
         addAndMakeVisible(s);
-        
+
         auto* l = new juce::Label();
         labels.add(l);
         l->setText(names[i], juce::dontSendNotification);
@@ -46,7 +46,7 @@ VoxRestoreAudioProcessorEditor::VoxRestoreAudioProcessorEditor(VoxRestoreAudioPr
         l->setColour(juce::Label::textColourId, juce::Colour(0xffc4d0d4));
         l->setFont(juce::Font(10.5f).withStyle(juce::Font::bold));
         addAndMakeVisible(l);
-        
+
         attachments.push_back(std::make_unique<Attachment>(processor.parameters, ids[i], *s));
     }
 }
@@ -66,11 +66,11 @@ void VoxRestoreAudioProcessorEditor::setPreset(int id)
 void VoxRestoreAudioProcessorEditor::timerCallback()
 {
     float progress = processor.getAutoProgress();
-    status.setText("Analysing vocal… " + juce::String((int)(progress * 100.0f)) + "%",
+    status.setText("Analysing vocal... " + juce::String((int)(progress * 100.0f)) + "%",
                    juce::dontSendNotification);
     if (processor.isAutoAnalysisComplete()) {
         processor.applyAutoAnalysis();
-        status.setText("Analysis complete • suggested settings applied", juce::dontSendNotification);
+        status.setText("Analysis complete - suggested settings applied", juce::dontSendNotification);
         stopTimer();
     }
 }
@@ -86,14 +86,14 @@ void VoxRestoreAudioProcessorEditor::paint(juce::Graphics& g)
     const juce::Rectangle<int> a[] = {{20,100,215,470},{247,100,430,470},{685,100,215,225},{685,340,215,230}};
     const juce::String t[] = {"01  FOUNDATION","02  ARTIFACT REPAIR","03  VOCAL BODY","04  LEVEL & OUTPUT"};
     for (int i=0;i<4;++i) {
-        g.setColour(panel); 
+        g.setColour(panel);
         g.fillRoundedRectangle(a[i].toFloat(),12.0f);
-        g.setColour(teal); // <-- Fixed: explicitly restore color before drawing text
+        g.setColour(teal);
         g.setFont(juce::Font(12.0f).withStyle(juce::Font::bold));
         g.drawText(t[i],a[i].reduced(12).removeFromTop(26),juce::Justification::centredLeft);
     }
-    g.setColour(juce::Colour(0xff75858a)); 
-    g.setFont(juce::Font(10.0f)); // Fixed font constructor
+    g.setColour(juce::Colour(0xff75858a));
+    g.setFont(juce::Font(10.0f));
     g.drawText("AUTO suggests settings from level / spectral activity; it cannot restore missing words.",
                26,580,800,18,juce::Justification::centredLeft);
 }
@@ -101,28 +101,30 @@ void VoxRestoreAudioProcessorEditor::resized()
 {
     presetBox.setBounds(490,25,170,28); autoButton.setBounds(674,22,165,34);
     powerButton.setBounds(844,22,62,34); status.setBounds(26,75,560,20);
-    
-    // Safety check: ensure arrays have at least 16 elements before indexing
-    if (sliders.size() < 16 || labels.size() < 16) return;
 
     for (int i=0;i<4;++i) {
         int x=30+(i%2)*103, y=165+(i/2)*190;
-        sliders[i]->setBounds(x,y,88,105); labels[i]->setBounds(x-3,y-24,94,20);
+        if (i < sliders.size() && sliders[i] != nullptr) sliders[i]->setBounds(x,y,88,105);
+        if (i < labels.size()  && labels[i]  != nullptr) labels[i]->setBounds(x-3,y-24,94,20);
     }
     for (int i=4;i<7;++i) {
-        int x=260+(i-4)*137; sliders[i]->setBounds(x,158,112,116);
-        labels[i]->setBounds(x-2,135,116,20);
+        int x=260+(i-4)*137;
+        if (i < sliders.size() && sliders[i] != nullptr) sliders[i]->setBounds(x,158,112,116);
+        if (i < labels.size()  && labels[i]  != nullptr) labels[i]->setBounds(x-2,135,116,20);
     }
     for (int i=7;i<10;++i) {
-        int x=260+(i-7)*137; sliders[i]->setBounds(x+12,330,88,96);
-        labels[i]->setBounds(x,309,112,20);
+        int x=260+(i-7)*137;
+        if (i < sliders.size() && sliders[i] != nullptr) sliders[i]->setBounds(x+12,330,88,96);
+        if (i < labels.size()  && labels[i]  != nullptr) labels[i]->setBounds(x,309,112,20);
     }
     for (int i=10;i<13;++i) {
         int x=694+((i-10)%2)*100, y=145+((i-10)/2)*105;
-        sliders[i]->setBounds(x,y,88,82); labels[i]->setBounds(x-4,y-19,96,18);
+        if (i < sliders.size() && sliders[i] != nullptr) sliders[i]->setBounds(x,y,88,82);
+        if (i < labels.size()  && labels[i]  != nullptr) labels[i]->setBounds(x-4,y-19,96,18);
     }
     for (int i=13;i<16;++i) {
         int x=694+((i-13)%2)*100, y=390+((i-13)/2)*105;
-        sliders[i]->setBounds(x,y,88,82); labels[i]->setBounds(x-4,y-19,96,18);
+        if (i < sliders.size() && sliders[i] != nullptr) sliders[i]->setBounds(x,y,88,82);
+        if (i < labels.size()  && labels[i]  != nullptr) labels[i]->setBounds(x-4,y-19,96,18);
     }
 }
